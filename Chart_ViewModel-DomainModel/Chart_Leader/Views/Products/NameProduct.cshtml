@@ -1,0 +1,33 @@
+﻿@*@{ Layout = null;}*@
+<br />
+<br />
+<br />
+<br />
+@ViewBag.Name
+
+
+<table class="table table-bordered table-hover table-responsive ">
+    <thead>
+        <tr>
+            <th>Cat_id</th>
+            <th>Product_id</th>
+            <th>Product_Name</th>
+            <th>Product_Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (ViewBag.listProducts != null)
+        {
+            foreach (var item in ViewBag.listProducts)
+            {
+                <tr>
+                    <td>@item.Cat_id</td>
+                    <td>@item.Product_id</td>
+                    <td>@item.Product_Name</td>
+                    <td>@item.Product_Description</td>
+                </tr>
+            }
+        }
+
+    </tbody>
+</table>

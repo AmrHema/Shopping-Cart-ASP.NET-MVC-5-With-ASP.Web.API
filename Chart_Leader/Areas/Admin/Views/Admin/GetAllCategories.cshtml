@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Chart_Leader.Models.CategoriesViewModel>
+
+@{
+    ViewBag.Title = "GetAllCategoriestest";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="container-fluid">
+    <!-- Breadcrumbs-->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("Dashboard", "Admin",new { area = "Admin"})">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Categories</li>
+    </ol>
+    <!-- DataTables Example -->
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fas fa-table"></i>
+            Categories Details
+            <a href="@Url.Action("AddCategorie", "Admin",new { area = "Admin"})" class="btn btn-primary pull-right" style="color:#ffffff"><i class="fas fa-plus-circle"></i> Add New</a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Cat_id)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Cat_Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Cat_Description)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Cat_Image)
+                            </th>
+                            <th><i class="fas fa-cog"></i> Operation</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Cat_id)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Cat_Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Cat_Description)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Cat_Image)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Edit", "UpdateCategory", new { id = item.Cat_id }) |
+                                    @Html.ActionLink("Details", "DetailCategory", new { id   = item.Cat_id }) |
+                                    @Html.ActionLink("Delete", "DeleteCategory", new { id = item.Cat_id })
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+    </div>
+    <p class="small text-center text-muted my-5">
+        <em>More table examples coming soon...</em>
+    </p>
+</div>
+<!-- /.container-fluid -->

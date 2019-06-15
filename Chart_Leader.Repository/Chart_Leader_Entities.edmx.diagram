@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f55d1877ced2423e9a383ce3d0ee8e7b" Name="Diagram1" ZoomLevel="80">
+        <EntityTypeShape EntityType="leaderModel.C__MigrationHistory" Width="1.5" PointX="5.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="leaderModel.AspNetRoles" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="leaderModel.AspNetUserClaims" Width="1.5" PointX="3" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="leaderModel.AspNetUserLogins" Width="1.5" PointX="3" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="leaderModel.AspNetUserRoles" Width="1.5" PointX="6" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="leaderModel.AspNetUsers" Width="1.5" PointX="0.75" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="leaderModel.Card" Width="1.5" PointX="11" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="leaderModel.Categories" Width="1.5" PointX="5.75" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="leaderModel.Customers" Width="1.5" PointX="5.75" PointY="15.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="leaderModel.Employee" Width="1.5" PointX="0.75" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="leaderModel.membre" Width="1.5" PointX="8.75" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="leaderModel.Order_Products" Width="1.5" PointX="10.25" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="leaderModel.Orders" Width="1.5" PointX="8" PointY="15.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="leaderModel.Orders_Detailes" Width="1.5" PointX="8" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="leaderModel.Products" Width="1.5" PointX="8" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="leaderModel.Shopping_Card" Width="1.5" PointX="2.75" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="leaderModel.sysdiagrams" Width="1.5" PointX="10.75" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="leaderModel.changePassword" Width="1.5" PointX="11" PointY="4.875" IsExpanded="true" />
+        <AssociationConnector Association="leaderModel.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" ManuallyRouted="false" />
+        <AssociationConnector Association="leaderModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="leaderModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="leaderModel.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="leaderModel.FK_Card_membre" ManuallyRouted="false" />
+        <AssociationConnector Association="leaderModel.FK_Orders_Detailes_Categories" ManuallyRouted="false" />
+        <AssociationConnector Association="leaderModel.FK_Products_Products" ManuallyRouted="false" />
+        <AssociationConnector Association="leaderModel.FK_Orders_Orders" ManuallyRouted="false" />
+        <AssociationConnector Association="leaderModel.FK__changePas__usern__40C49C62" ManuallyRouted="false" />
+        <AssociationConnector Association="leaderModel.FK_Order_Products_Orders" ManuallyRouted="false" />
+        <AssociationConnector Association="leaderModel.FK_Order_Products_Products" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

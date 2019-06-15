@@ -1,0 +1,136 @@
+﻿@using Chart_Leader.Models;
+@using Chart_Leader.Helper_Custom;
+@using Chart_Leader.Repository;
+
+@model IEnumerable<Chart_Leader.Models.ProductsViewModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<h2> </h2>
+
+<br />
+<br />
+
+
+<div class="container">
+    @using (Html.BeginForm("Index", "Home"))
+        {
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search By Product Name" name="ProductName">
+            <div class="input-group-btn">
+                <button class="btn btn-success" type="submit"> OK </button>
+            </div>
+        </div>
+
+        }
+
+</div>
+
+<br />
+
+
+<!-- SECTION -->
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <!-- section title -->
+            <div class="col-md-12">
+                <div class="section-title">
+                    <div class="section-nav">
+                        <ul class="section-tab-nav tab-nav">
+                            <li class="active"><a data-toggle="tab" href="#tab1">Laptops</a></li>
+                            <li><a data-toggle="tab" href="#tab1">Smartphones</a></li>
+                            <li><a data-toggle="tab" href="#tab1">Cameras</a></li>
+                            <li><a data-toggle="tab" href="#tab1">Accessories</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- /section title -->
+            <!-- Products tab & slick -->
+            <div class="col-md-12">
+                <div class="row">
+                    @Html.Partial("GetAllProducts",Model)
+                </div>
+            </div>
+            <!-- Products tab & slick -->
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /SECTION -->
+@* Start Caressoul *@
+
+
+@*<!-- Start section Loading -->
+        <div class="loading">
+            <div class="spinner">
+                <div class="rect1"></div>
+                <div class="rect2"></div>
+                <div class="rect3"></div>
+                <div class="rect4"></div>
+                <div class="rect5"></div>
+            </div>
+        </div>
+        <!-- End section Loading -->
+    </div>*@
+
+
+
+<link href="~/Content/animate.css" rel="stylesheet" />
+@section scripts{
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script>
+        $(function () {
+            $(".carousel").carousel({
+                interval: 1500,
+                pause: "hover"
+            });
+            //caching loading
+            $(".loading").fadeOut(1000);
+            $('img').mouseenter(function () { $(this).addClass("wow bounceIn") });
+
+
+            $('.left').click(function () { $.notify("تم اضافة العنصر", "success"); });
+
+
+        })
+
+
+
+        function BuyProduct(P_ID) {
+            $.ajax({
+                type: 'POST',
+                url: "Cart/BuyJsontest",
+                data: "{ 'P_ID': " + P_ID + "}",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $('#tstbasket').html(data);
+                    $.notify("Added success", "success");
+                    swal("Add To Cart!", "Thanks for Add To Cart!", "success");
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    //debugger;
+                    alert(errorThrown + " Failed By Amr");
+                }
+            });
+            return false;
+        }
+
+    </script>
+
+    @* hover css *@
+
+
+    @* wow animate css + wow.js *@
+    <link href="~/Content/hover.css" rel="stylesheet" />
+
+    <script src="~/Scripts/wow.min.js"></script>
+    <script>new WOW().init();</script>
+}

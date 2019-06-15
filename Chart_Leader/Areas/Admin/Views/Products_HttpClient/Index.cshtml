@@ -1,0 +1,96 @@
+﻿@model IEnumerable<Chart_Leader.Repository.Products>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a href="@Url.Action("AddEditProduct", "Products_HttpClient")" class="btn btn-success"><i class="fa fa-plus"></i> Create New</a>
+</p>
+<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+    <thead class="">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Cat_id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product_id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product_Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product_Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product_QTY)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cat_id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product_id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product_Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product_Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product_QTY)
+                </td>
+                <td>
+                    <a href="@Url.Action("AddEditProduct", "Products_HttpClient",new {  Product_id=item.Product_id })" class="btn btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                    <a onclick="Delete(@item.Product_id)" class="btn btn-default"><i class="fa fa-trash"></i>  Delete</a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+@section scripts{
+    <script>
+        $(function () {
+            var successMessage = '@TempData["SuccessMessage"]'
+            if (successMessage != '')
+                alertify.success(successMessage);
+            //swal({ title: "Result", text: successMessage, icon: "success", button: "OK!" });
+        });
+
+         function Delete(id) {
+             alertify.confirm('Web Api Leader Operations', 'Are You Sure to Delete this Record ?',
+                 function ()
+                 {
+                     window.location.href = '@Url.Action("Delete", "Products_HttpClient")/' + id;
+                 },
+                 null);
+        }
+
+        //function Delete(id) {
+        //    alertify.confirm('Web Api CRUD Operations','Are You Sure to Delete this Record ?',function(){
+        //        $.ajax({
+        //            type: "Post", url: '/Products_HttpClient/Delete/' + id
+        //        });
+        //        location.reload();
+        //    }, null);
+
+        //    return false;
+        //}
+
+
+    </script>
+}
+

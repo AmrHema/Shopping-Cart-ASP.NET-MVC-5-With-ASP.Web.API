@@ -1,0 +1,181 @@
+﻿@model Chart_Leader.Models.ProductsViewModel
+@{
+    ViewBag.Title = "Create";
+    Layout = null;
+}
+
+
+
+@using (Html.BeginForm("AddEditProduct", "Products_Json", FormMethod.Post, new { enctype = "multipart/form-data" ,id= "form" }))//data-resetUrl
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.HiddenFor(model => model.Product_id)
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Cat_id, "Cat_id", htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.DropDownList("Cat_id", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Cat_id, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Product_Name, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.Product_Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Product_Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Product_Price, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.Product_Price, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Product_Price, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Product_QTY, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.Product_QTY, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Product_QTY, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Product_Writing_Date, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.Product_Writing_Date, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Product_Writing_Date, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Product_Description, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.Product_Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Product_Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Product_Image, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @if (Model.Product_Image == null)
+                {
+                    <img class="img-thumbnail" src="~/Common/Images/uploade.jpg" alter="Image" style="margin:10px" height="200" width="200" id="imagePreview" />
+                }
+                else
+                {
+                    <img class="img-thumbnail" src="@Url.Content(Model.Product_Image)" alter="Image" style="margin:10px" height="200" width="200" id="imagePreview" />
+                }
+                <input type="file" name="ImageUpload" accept="image/jpeg, image/png" onchange="ShowImagePreview(this,document.getElementById('imagePreview'))" />
+                @Html.ValidationMessageFor(model => model.Product_Image, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-3 col-md-9">
+
+                <button type="submit" id="btnSubmit" class="btn btn-success btn-block">
+                    @if (Model.Product_id > 0)
+                    {<span>Update</span> }
+                    else
+                    {<span>Save</span>}
+                </button>
+
+            </div>
+        </div>
+    </div>
+}
+
+
+<script>
+
+    $(document).ready(function () {
+
+        $('form').submit(function (event) {
+            event.preventDefault();
+
+            $.ajax({
+                url: this.action,
+                type: this.method,
+                data: new FormData(this),
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    if (data.success) {
+                        $("#myModal").modal("hide");
+                        table.ajax.reload();
+                        swal({ title: "Result", text: data.msg, icon: "success", button: "OK!" });
+                    }
+                    else $.notify(data.msg, "warn");
+                }
+
+            });
+        });
+
+        //$("#btnSubmit").click(function (evt) {
+        //   var myformdata = $("#form").serialize();
+           
+        //    $.ajax({
+        //        type: "POST",
+        //        url: "/Admin/Products_Json/AddEditProduct" ,
+        //        data: myformdata,
+        //        dataType: 'json',
+        //        contentType: false,
+        //        processData: false,
+        //        success: function (data) {
+        //            if (data.success) {
+        //                $("#myModal").modal("hide");
+        //                table.ajax.reload();
+        //                swal({ title: "Result", text: data.msg, icon: "success", button: "OK!" });
+        //            }
+        //            else $.notify(data.msg, "warn");
+        //        }
+
+        //    })
+
+        //});
+
+        //Start datepicker
+
+        var options = $.extend(
+            {},                                  // empty object
+            $.datepicker.regional["fr"],        // Dynamically
+            {
+                dateFormat: "dd / mm / yy", minDate: new Date(),// maxDate:"+10D +5M",dateFormat: "DD, d MM, yy",
+                //stepMonths: 0,    // select current month //numberOfMonths: 3,
+                changeMonth: true, changeYear: true, yearRange: "1980:2050",// yearRange: "-100:+100",
+                showButtonPanel: true,// gotoCurrent: true,
+                showAnim: "scale", //'slideDown'
+                showOptions: { origin: ["top", "left"] }, showOtherMonths: true, selectOtherMonths: false,
+                showWeek: true, firstDay: 1      //show the week of the year
+
+            } // your custom options
+        );
+
+        $("input:text.date").datepicker(options).addClass("form-control");
+
+        // End datepicker
+
+        //to modify jquery.validate.js by finding the function date: function (value, element) and put this code in it:
+        $.validator.methods.date = function (value, element) {
+            if ($.browser.webkit) {
+                var d = new Date();
+                return this.optional(element) || !/Invalid|NaN/.test(new Date(d.toLocaleDateString(value)));
+            }
+            else {
+                return this.optional(element) || !/Invalid|NaN/.test(new Date(value));
+            }
+        };
+
+
+
+    }); // En Load Function
+    $("input:text.date").attr("autocomplete", "off");
+
+</script>

@@ -1,0 +1,48 @@
+﻿@model IEnumerable<Chart_Leader.Repository.Products>
+@using Chart_Leader.Models;
+@using Chart_Leader.Helper_Custom;
+@using Chart_Leader.Repository;
+@*@model IEnumerable<Chart_Leader.Models.ProductsViewModel>*@
+<!-- tab -->
+<div id="tab1" class="tab-pane active">
+    <div class="products-slick" data-nav="#slick-nav-1">
+        <!-- product -->
+        @foreach (var item in Model)
+        {
+            <!-- product -->
+            <div class="product">
+                <div class="product-img">
+                    <img src="@Url.Content(item.Product_Image)" class="img-responsive" alt="" style="width:80%; height:300px">
+                    <div class="product-label">
+                        <span class="new">NEW</span>
+                    </div>
+                </div>
+                <div class="product-body">
+                    <p class="product-category">@item.Cat_id</p>
+                    <h3 class="product-name"><a href="#">@item.Product_Name</a></h3>
+                    <h4 class="product-price">$@item.Product_Price <del class="product-old-price">$990.00</del></h4>
+                    <div class="product-rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star-o"></i>
+                    </div>
+                    <div class="product-btns">
+                        <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
+                        <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
+                        <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+                    </div>
+                </div>
+                <div class="add-to-cart">
+                    @*<button class="add-to-cart-btn" tabindex="-1"><a href="/Cart/Buy/id=@item.Product_id"> <i class="fa fa-shopping-cart"></i> add to cart</a></button>*@
+                    <button class="add-to-cart-btn" tabindex="-1">@Html.ActionLink("Add to Cart", "Buy", "Cart", new { area = "", id = @item.Product_id }, new { @class = "fa fa-shopping-cart" })</button>
+                </div>
+            </div>
+            <!-- /product -->
+        }
+
+    </div>
+    <div id="slick-nav-1" class="products-slick-nav"></div>
+</div>
+<!-- /tab -->

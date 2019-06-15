@@ -1,0 +1,163 @@
+﻿@model Chart_Leader.Repository.Products
+
+
+
+
+@Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    @Html.HiddenFor(model => model.Product_id)
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.Cat_id, "Cat_id", htmlAttributes: new { @class = "control-label col-md-3" })
+        <div class="col-md-9">
+            @Html.DropDownList("Cat_id", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Cat_id, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Product_Name, htmlAttributes: new { @class = "control-label col-md-3" })
+        <div class="col-md-9">
+            @Html.EditorFor(model => model.Product_Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Product_Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Product_Price, htmlAttributes: new { @class = "control-label col-md-3" })
+        <div class="col-md-9">
+            @Html.EditorFor(model => model.Product_Price, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Product_Price, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Product_QTY, htmlAttributes: new { @class = "control-label col-md-3" })
+        <div class="col-md-9">
+            @Html.EditorFor(model => model.Product_QTY, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Product_QTY, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Product_Writing_Date, htmlAttributes: new { @class = "control-label col-md-3" })
+        <div class="col-md-9">
+            @Html.EditorFor(model => model.Product_Writing_Date, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Product_Writing_Date, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Product_Description, htmlAttributes: new { @class = "control-label col-md-3" })
+        <div class="col-md-9">
+            @Html.EditorFor(model => model.Product_Description, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Product_Description, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Product_Image, htmlAttributes: new { @class = "control-label col-md-3" })
+        <div class="col-md-9">
+            @Html.EditorFor(model => model.Product_Image, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Product_Image, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-3 col-md-9">
+
+            @if (Model.Product_id == 0)
+            {
+                <button type="submit" class="btn btn-success btn-block" id="btnInsert">
+                    Save
+                </button>
+
+            }
+            else
+            {
+                <button type="submit" class="btn btn-outline-success btn-block" id="btnUpdate">
+                    Update
+                </button>
+            }
+
+            <button type="submit" class="btn btn-outline-primary btn-block" id="btnReset">
+                Reset
+            </button>
+
+
+        </div>
+    </div>
+</div>
+
+
+<script src="~/Scripts/CRUD_Site_Json.js"></script>
+
+<script>
+
+    $(function () {
+        $("#btnReset").click(function () {
+            ResetModal();
+        });
+
+        // Inser Product
+        $("#btnInsert").click(function () {
+            Add();
+        });
+
+
+
+        $("#btnUpdate").click(function () {
+            Update();
+        });
+
+
+        //Start datepicker
+
+        var options = $.extend(
+            {},                                  // empty object
+            $.datepicker.regional["fr"],        // Dynamically
+            {
+                dateFormat: "dd / mm / yy", 
+                //stepMonths: 0,    // select current month //numberOfMonths: 3,
+                changeMonth: true, changeYear: true, yearRange: "1980:2050",// yearRange: "-100:+100",
+                showButtonPanel: true,// gotoCurrent: true,
+                showAnim: "scale", //'slideDown'
+                showOptions: { origin: ["top", "left"] }, showOtherMonths: true, selectOtherMonths: false,
+                showWeek: true, firstDay: 1      //show the week of the year
+
+            } // your custom options
+        );
+
+        $("input:text.date").datepicker(options).addClass("form-control");
+
+        // End datepicker
+
+        //to modify jquery.validate.js by finding the function date: function (value, element) and put this code in it:
+        $.validator.methods.date = function (value, element) {
+            if ($.browser.webkit) {
+                var d = new Date();
+                return this.optional(element) || !/Invalid|NaN/.test(new Date(d.toLocaleDateString(value)));
+            }
+            else {
+                return this.optional(element) || !/Invalid|NaN/.test(new Date(value));
+            }
+        };
+
+
+
+
+
+
+
+
+    });// End
+
+       
+
+
+
+
+
+
+</script>

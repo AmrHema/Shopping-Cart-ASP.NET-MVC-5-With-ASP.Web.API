@@ -1,0 +1,27 @@
+﻿
+    <a class="basket" id="basket">
+        @{
+            if (Session["cart"] == null)
+            {
+                <span class="txtbasket">Your Basket: </span> <span style="background:#0094ff;padding:10px;color:#fff;border-radius:50%;">0</span>
+
+            }
+            else
+            {
+                List<Item> cart = (List<Item>)Session["cart"];
+                <span class="txtbasket">Your Basket: </span> <span class="lblcount">@cart.Count()</span>
+                <table>
+                    @foreach (var c in cart)
+                    {
+                        <tr><td>@c.quantity x @String.Format("{0:c}", c.product.Product_Name)</td><td>@c.product.Product_Name</td></tr>
+                    }
+                    <tr>
+                        @{var Total = cart.Sum(x => x.quantity * x.product.Product_Price); }
+                        <td>Total: @String.Format("{0:c}", @Total)</td>
+                        <td>@Html.ActionLink("Check Out", "Index", "Cart")</td>
+                    </tr>
+                </table>
+            }
+        }
+
+    </a>

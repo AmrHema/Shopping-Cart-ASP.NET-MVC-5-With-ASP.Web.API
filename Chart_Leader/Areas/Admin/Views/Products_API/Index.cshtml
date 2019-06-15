@@ -1,0 +1,183 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="input-group mb-3">
+    <input type="text" id="textAutocomplete" class="form-control" placeholder="Search">
+    <div class="input-group-append">
+        <button class="btn btn-success" type="submit">Go</button>
+    </div>
+</div>
+
+
+
+<div class="well">
+    <a href="#" class="btn btn-primary" onclick="AddEditProduct(0)"> <i class="fas fa-plus-circle"></i>  Add New</a>
+</div>
+<br />
+<table class="table table-bordered" id="tblProduct" width="100%" cellspacing="0">
+    <thead>
+        <tr>
+            <th> Product_Name</th>
+            <th> Product_Price</th>
+            <th> Product_QTY</th>
+            <th> Product_id</th>
+        </tr>
+    </thead>
+    <tbody id="tblBody"></tbody>
+    <tfoot>
+        <tr>
+            <th> Product_Name</th>
+            <th> Product_Price</th>
+            <th> Product_QTY</th>
+            <th> Product_id</th>
+        </tr>
+    </tfoot>
+</table>
+
+
+<!-- The Modal -->
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Modal Heading</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                Modal body..
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<input type="hidden" id="hiddenEmployeeId" />
+<!-- fontawesome 4 -->
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+@section Scripts {
+    <script>
+       var table;
+         $(function () {
+             $('[data-toggle="tooltip"]').tooltip();
+
+             table = $('#tblProduct').DataTable({
+                ajax: {
+                    url: "http://localhost:60000/api/Products",
+                    dataSrc:""
+                },
+                columns: [
+                    { "data": "Product_Name", "name": "Product_Name" },
+                    { "data": "Product_Price", "name": "Product_Price" },
+                    { "data": "Product_QTY", "name": "Product_QTY" },
+                    {
+                        "data": "Product_id", "name": "Product_id", "render": function (data) { return " <a id='btnjquery' value='Show' data-toggle='tooltip' title='Show Product' style='margin-right:10px; color:#fff' class='btn btn-primary btn-sm' onclick=AddEditProduct(" + data + ")><i class='fas fa-eye-slash'></i> Preview</a><a id='btnjquery' value='Edit' style='margin-right:10px; color:#fff' data-toggle='tooltip' title='Edit Product' class='btn btn-primary btn-sm' onclick=AddEditProduct(" + data + ")><i class='far fa-edit'></i> Edit</a><a id='btnjquery' value='Delete' data-toggle='tooltip' style='margin-right:10px; color:#fff' title='Delete Product' class='btn btn-danger btn-sm' onclick=Delete(" + data + ")><i class='fas fa-trash-restore'></i> Delete</a>" }
+                    }
+                ],
+                //Positioning elements with dataTables dom
+                "dom": '<"top"l>t<"bottom"ip><"clear">',
+
+                "pagingType": "first_last_numbers",
+                "fnInitComplete": function (json) { addSearchControl(json); }
+             });
+
+            //Start Function Search
+            function addSearchControl(json) {
+                $("#tblProduct thead").append($("#tblProduct thead tr:first").clone());
+                $("#tblProduct thead tr:eq(1) th").each(function (index) {
+                    $(this).replaceWith('<th><input type="text" placeholder="Search' + $(this).text() + '"></input></th>');
+                    var searchControl = $("#tblProduct thead tr:eq(1) th:eq(" + index + ") input");
+                    searchControl.on('keyup change', function () { table.column(index).search(searchControl.val()).draw(); });
+                });
+
+
+                // footer
+                $('#dataTable tfoot th').each(function (index) {
+                    $(this).replaceWith('<th><input type="text" placeholder="Search' + $(this).text() + '"></input></th>');
+                    var searchControl = $("#dataTable tfoot th:eq(" + index + ") input");
+                    searchControl.on('keyup change', function () { table.column(index).search(searchControl.val()).draw(); });
+
+                });
+            }
+            //End Function Search
+
+
+        });
+        //End
+
+        // autocomplete
+        $("#textAutocomplete").autocomplete({
+            source: function (request, response)
+            {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetProducts", "Products_Json",new { area=""})',
+                    data: { text: request.term },
+                    success: function (data) {response(data);}
+                    })
+            }
+        });
+
+
+        //AddEditProduct
+        var AddEditProduct = function (id)
+        {
+            var url = "/Admin/Products_Json/AddEditProduct?Product_id=" + id;
+
+               $.ajax({
+                    type: "GET",
+                    url:url,
+                    success: function (data) {
+                        $(".modal-body").html(data);
+                        $("#myModal").modal("show");
+                   },
+                   error: function () {
+                     alert("Error")
+                   },
+
+                })
+            return false;
+        }
+
+        //Delete
+        function Delete(id) {
+            if (confirm("Are you Sûr to Delete this Products")) {
+                $.ajax({
+                    type: "Post", url: '/Products_Json/DeleteProduct?Product_id=' + id,
+                    success: function (data) {
+                        if (data.success) {
+                            table.ajax.reload();
+                            swal({ title: "Result", text: data.msg, icon: "success", button: "OK!" });
+                        }
+                        else $.notify(data.msg, "warn");
+
+                    }
+
+                })
+            }
+            return false;
+        }
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+}

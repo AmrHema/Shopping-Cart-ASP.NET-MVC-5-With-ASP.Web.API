@@ -1,0 +1,119 @@
+﻿
+
+@{
+    /**/
+
+    ViewBag.Title = "Index";
+}
+
+<h2>Products</h2>
+
+
+@if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+{
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+}
+<table class="table table-bordered table-striped " id="tblProducts_">
+        <thead>
+            <tr>
+                <th> @Html.DisplayName("Product_Name") </th>
+                <th> @Html.DisplayName("Product_Price") </th>
+                <th> @Html.DisplayName("Product_QTY") </th>
+                <th> @Html.DisplayName("Product_Writing_Date") </th>
+                <th> @Html.DisplayName("Product_Description") </th>
+                <th> @Html.DisplayName("Product_Image") </th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in (List<ProductsViewModel>)ViewBag.Products_V_Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Product_Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Product_Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Product_QTY)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Product_Writing_Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Product_Description)
+                    </td>
+                    <td>
+                        @Html.Image(item.Product_Image, item.Product_id + "", new { @class = "img-thumbnail imgProduct img-reponsive center-block hvr-bounce-in ", style = "height:150px; width:150px" })
+                    </td>
+                
+                    <td>
+                        @if (Request.IsAuthenticated && User.IsInRole("admin"))
+                        {
+                            @Html.ActionLink("Edit", "Edit", new { id = item.Product_id }) <text>| </text>
+                            @Html.ActionLink("Details", "Details", new { id = item.Product_id })@Html.Raw(" | ")
+                            @Html.ActionLink("Delete", "Delete", new { id = item.Product_id })
+                        }
+                        @Html.ActionLink("Details", "Details", new { id = item.Product_id })
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <th> @Html.DisplayName("Product_Name") </th>
+                <th> @Html.DisplayName("Product_Price") </th>
+                <th> @Html.DisplayName("Product_QTY") </th>
+                <th> @Html.DisplayName("Product_Writing_Date") </th>
+                <th> @Html.DisplayName("Product_Description") </th>
+                <th> @Html.DisplayName("Product_Image") </th>
+                <th></th>
+            </tr>
+        </tfoot>
+    </table>
+    <style>
+        div.dataTables_wrapper {
+            width: 1000px;
+            margin: 0 auto;
+        }
+    </style>
+
+    @section scripts{
+        <script>
+
+            $(document).ready(function () {
+                var table = $('#tblProducts_').DataTable({
+                    //scrollY: '50vh',
+                    //scrollCollapse: true,
+                    //Positioning elements with dataTables dom
+                    "dom": '<"top"l>rt<"bottom"ip><"clear">',
+                    "fnInitComplete": function (oSettings, json) { addSearchControl(json); }
+                });
+
+                //Start Function Search
+                function addSearchControl(json) {
+                    $("#tblProducts_ thead").append($("#tblProducts_ thead tr:first").clone());
+                    $("#tblProducts_ thead tr:eq(1) th").each(function (index) {
+                        $(this).replaceWith('<th><input type="text" placeholder="Search' + $(this).text() + '"></input></th>');
+                        var searchControl = $("#tblProducts_ thead tr:eq(1) th:eq(" + index + ") input");
+                        searchControl.on('keyup change', function () { table.column(index).search(searchControl.val()).draw(); });
+
+                    });
+
+
+                    $("#tblProducts_ tfoot th").each(function (index) {
+                        $(this).replaceWith('<th><input type="text" placeholder="Search' + $(this).text() + '"></input></th>');
+                        var searchControl = $("#tblProducts_ tfoot th:eq(" + index + ") input");
+                        searchControl.on('keyup change', function () { table.column(index).search(searchControl.val()).draw(); });
+
+                    });
+                }
+                //End Function Search
+
+            });
+        </script>
+    }

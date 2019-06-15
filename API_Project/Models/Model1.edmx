@@ -1,0 +1,282 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="leaderModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="Cat_id" />
+          </Key>
+          <Property Name="Cat_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Cat_Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Cat_Description" Type="nvarchar" MaxLength="200" />
+          <Property Name="Cat_Image" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Customers">
+          <Key>
+            <PropertyRef Name="CID" />
+          </Key>
+          <Property Name="CID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Phone" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Address" Type="varchar(max)" Nullable="false" />
+          <Property Name="Postcode" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Ctype" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CardNo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ExpDate" Type="datetime" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="Product_id" />
+          </Key>
+          <Property Name="Cat_id" Type="int" Nullable="false" />
+          <Property Name="Product_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Product_Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Product_Price" Type="decimal" Precision="9" Scale="2" Nullable="false" />
+          <Property Name="Product_QTY" Type="int" Nullable="false" />
+          <Property Name="Product_Writing_Date" Type="datetime" />
+          <Property Name="Product_Description" Type="nvarchar" MaxLength="200" />
+          <Property Name="Product_Image" Type="nvarchar(max)" />
+        </EntityType>
+        <Association Name="FK_Products_Products">
+          <End Role="Categories" Type="Self.Categories" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="Cat_id" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="Cat_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="Products_SP_DeletByProduct_id" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Product_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Products_SP_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Cat_id" Type="int" Mode="In" />
+          <Parameter Name="Product_Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="Product_Price" Type="decimal" Mode="In" />
+          <Parameter Name="Product_QTY" Type="int" Mode="In" />
+          <Parameter Name="Product_Description" Type="nvarchar" Mode="In" />
+          <Parameter Name="Product_Image" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="Product_Writing_Date" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="Products_SP_SelectAll_" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Products_sp_SelectByID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Product_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Products_SP_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Cat_id" Type="int" Mode="In" />
+          <Parameter Name="Product_Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="Product_Price" Type="decimal" Mode="In" />
+          <Parameter Name="Product_QTY" Type="int" Mode="In" />
+          <Parameter Name="Product_Description" Type="nvarchar" Mode="In" />
+          <Parameter Name="Product_Image" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="Product_Writing_Date" Type="datetime" Mode="In" />
+          <Parameter Name="Product_id" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="leaderModelStoreContainer">
+          <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Products_Products" Association="Self.FK_Products_Products">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="leaderModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="Cat_id" />
+          </Key>
+          <Property Name="Cat_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Cat_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Cat_Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Cat_Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Products" Relationship="Self.FK_Products_Products" FromRole="Categories" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="CID" />
+          </Key>
+          <Property Name="CID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Postcode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Ctype" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CardNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ExpDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="Product_id" />
+          </Key>
+          <Property Name="Cat_id" Type="Int32" Nullable="false" />
+          <Property Name="Product_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Product_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Product_Price" Type="Decimal" Precision="9" Scale="2" Nullable="false" />
+          <Property Name="Product_QTY" Type="Int32" Nullable="false" />
+          <Property Name="Product_Writing_Date" Type="DateTime" Precision="3" />
+          <Property Name="Product_Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Product_Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Category" Relationship="Self.FK_Products_Products" FromRole="Products" ToRole="Categories" />
+        </EntityType>
+        <Association Name="FK_Products_Products">
+          <End Role="Categories" Type="Self.Category" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Products" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="Cat_id" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="Cat_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="leaderEntities_API" annotation:LazyLoadingEnabled="false">
+          <EntitySet Name="Categories" EntityType="Self.Category" />
+          <EntitySet Name="Customers" EntityType="Self.Customer" />
+          <EntitySet Name="Products" EntityType="Self.Product" />
+          <AssociationSet Name="FK_Products_Products" Association="Self.FK_Products_Products">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <FunctionImport Name="Products_SP_SelectAll_" EntitySet="Products" ReturnType="Collection(leaderModel.Product)" />
+          <FunctionImport Name="Products_sp_SelectByID" EntitySet="Products" ReturnType="Collection(leaderModel.Product)">
+          <Parameter Name="Product_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Products_SP_Update" EntitySet="Products" ReturnType="Collection(leaderModel.Product)">
+            <Parameter Name="Cat_id" Mode="In" Type="Int32" />
+            <Parameter Name="Product_Name" Mode="In" Type="String" />
+            <Parameter Name="Product_Price" Mode="In" Type="Decimal" />
+            <Parameter Name="Product_QTY" Mode="In" Type="Int32" />
+            <Parameter Name="Product_Description" Mode="In" Type="String" />
+            <Parameter Name="Product_Image" Mode="In" Type="String" />
+            <Parameter Name="Product_Writing_Date" Mode="In" Type="DateTime" />
+            <Parameter Name="Product_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Products_SP_Insert" EntitySet="Products" ReturnType="Collection(leaderModel.Product)">
+            <Parameter Name="Cat_id" Mode="In" Type="Int32" />
+            <Parameter Name="Product_Name" Mode="In" Type="String" />
+            <Parameter Name="Product_Price" Mode="In" Type="Decimal" />
+            <Parameter Name="Product_QTY" Mode="In" Type="Int32" />
+            <Parameter Name="Product_Description" Mode="In" Type="String" />
+            <Parameter Name="Product_Image" Mode="In" Type="String" />
+            <Parameter Name="Product_Writing_Date" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="Products_SP_DeletByProduct_id" EntitySet="Products" ReturnType="Collection(leaderModel.Product)">
+          <Parameter Name="Product_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="Products_SP_SelectAll__Result">
+          <Property Type="Int32" Name="Cat_id" Nullable="false" />
+          <Property Type="Int32" Name="Product_id" Nullable="false" />
+          <Property Type="String" Name="Product_Name" Nullable="false" MaxLength="50" />
+          <Property Type="Decimal" Name="Product_Price" Nullable="false" Precision="9" Scale="2" />
+          <Property Type="Int32" Name="Product_QTY" Nullable="false" />
+          <Property Type="DateTime" Name="Product_Writing_Date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="Product_Description" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Product_Image" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="Products_sp_SelectByID_Result">
+          <Property Type="Int32" Name="Cat_id" Nullable="false" />
+          <Property Type="Int32" Name="Product_id" Nullable="false" />
+          <Property Type="String" Name="Product_Name" Nullable="false" MaxLength="50" />
+          <Property Type="Decimal" Name="Product_Price" Nullable="false" Precision="9" Scale="2" />
+          <Property Type="Int32" Name="Product_QTY" Nullable="false" />
+          <Property Type="DateTime" Name="Product_Writing_Date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="Product_Description" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Product_Image" Nullable="true" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="leaderModelStoreContainer" CdmEntityContainer="leaderEntities_API">
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="leaderModel.Category">
+              <MappingFragment StoreEntitySet="Categories">
+                <ScalarProperty Name="Cat_id" ColumnName="Cat_id" />
+                <ScalarProperty Name="Cat_Name" ColumnName="Cat_Name" />
+                <ScalarProperty Name="Cat_Description" ColumnName="Cat_Description" />
+                <ScalarProperty Name="Cat_Image" ColumnName="Cat_Image" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="leaderModel.Customer">
+              <MappingFragment StoreEntitySet="Customers">
+                <ScalarProperty Name="CID" ColumnName="CID" />
+                <ScalarProperty Name="FName" ColumnName="FName" />
+                <ScalarProperty Name="LName" ColumnName="LName" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Postcode" ColumnName="Postcode" />
+                <ScalarProperty Name="Ctype" ColumnName="Ctype" />
+                <ScalarProperty Name="CardNo" ColumnName="CardNo" />
+                <ScalarProperty Name="ExpDate" ColumnName="ExpDate" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="leaderModel.Product">
+              <MappingFragment StoreEntitySet="Products">
+                <ScalarProperty Name="Cat_id" ColumnName="Cat_id" />
+                <ScalarProperty Name="Product_id" ColumnName="Product_id" />
+                <ScalarProperty Name="Product_Name" ColumnName="Product_Name" />
+                <ScalarProperty Name="Product_Price" ColumnName="Product_Price" />
+                <ScalarProperty Name="Product_QTY" ColumnName="Product_QTY" />
+                <ScalarProperty Name="Product_Writing_Date" ColumnName="Product_Writing_Date" />
+                <ScalarProperty Name="Product_Description" ColumnName="Product_Description" />
+                <ScalarProperty Name="Product_Image" ColumnName="Product_Image" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Products_SP_SelectAll_" FunctionName="leaderModel.Store.Products_SP_SelectAll_">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Products_sp_SelectByID" FunctionName="leaderModel.Store.Products_sp_SelectByID">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Products_SP_Update" FunctionName="leaderModel.Store.Products_SP_Update" />
+          <FunctionImportMapping FunctionImportName="Products_SP_Insert" FunctionName="leaderModel.Store.Products_SP_Insert" />
+          <FunctionImportMapping FunctionImportName="Products_SP_DeletByProduct_id" FunctionName="leaderModel.Store.Products_SP_DeletByProduct_id" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

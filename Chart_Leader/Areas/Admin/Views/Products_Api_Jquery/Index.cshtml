@@ -1,0 +1,171 @@
+﻿@model Chart_Leader.Models.ProductsViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="input-group mb-3">
+    <input type="text" id="txtAutocomplete" class="form-control" placeholder="Search">
+    <div class="input-group-append">
+        <button class="btn btn-success" type="submit">Go</button>
+    </div>
+</div>
+
+
+
+<div class="well">
+    <a href="#" class="btn btn-primary" onclick="AddEditProduct(0)"> <i class="fas fa-plus-circle"></i>  Add New</a>
+</div>
+<br />
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        Test Data from API
+    </div>   <!--en dof panel-heading -->
+    <div class="panel-body">
+        
+        <table class="table table-bordered" id="tblProduct" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th> Product_Name</th>
+                    <th> Product_Price</th>
+                    <th> Product_QTY</th>
+                    <th> Operations</th>
+                </tr>
+            </thead>
+            <tbody id="tblBody"></tbody>
+            <tfoot>
+                <tr>
+                    <th> Product_Name</th>
+                    <th> Product_Price</th>
+                    <th> Product_QTY</th>
+                    <th> Operations</th>
+                </tr>
+            </tfoot>
+        </table>
+
+
+    </div> <!--end of Panel-body -->
+</div> <!--end of Panel -->
+<!-- The Modal -->
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Modal Heading</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<input type="hidden" id="hiddenEmployeeId" />
+<!-- fontawesome 4 -->
+@*   Scripts CRUD Json*@
+<script src="~/Scripts/CRUD_Site_Json.js"></script>
+
+@section Scripts {
+    <script>
+        var table;
+        $(document).ready(function () {
+
+            @*//2
+            $("#txtAutocomplete").autocomplete
+                ({
+            source: function (request, response)
+            {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetProducts", "Products_Api_Jquery", new { area = "Admin" })',
+                    //url:   '/Admin/Products_Api_Jquery/GetProducts',
+                    data: { term: request.term },
+                    success: function (data) {response(data);}
+                    })
+            }
+            });*@
+
+
+            $('#txtAutocomplete').autocomplete({
+               source:  '@Url.Action("GetProducts", "Products_Api_Jquery", new { area=""})'
+            });
+
+         //   DrawTable();
+            //Fil Table Json
+
+
+            table = $('#tblProduct').DataTable({
+                ajax: {
+                    url: "http://localhost:60000/api/Products",
+                    dataSrc: ""
+                },
+                columns: [
+                    { "data": "Product_Name", "name": "Product_Name" },
+                    { "data": "Product_Price", "name": "Product_Price" },
+                    { "data": "Product_QTY", "name": "Product_QTY" },
+                    {
+                        "data": "Product_id", "name": "Product_id", "render": function (data) { return " <a id='btnjquery' value='Edit' style='margin-right:10px; color:#fff' data-toggle='tooltip' title='Edit Product' class='btn btn-primary btn-sm' onclick=AddEditProduct(" + data + ")><i class='far fa-edit'></i> Edit</a><a id='btnjquery' value='Delete' data-toggle='tooltip' style='margin-right:10px; color:#fff' title='Delete Product' class='btn btn-danger btn-sm' onclick=Delete(" + data + ")><i class='fas fa-trash-restore'></i> Delete</a>" }
+                    }
+                ],
+                //Positioning elements with dataTables dom
+                "dom": '<"top"l>t<"bottom"ip><"clear">',
+                "lengthMenu": [[5, 10, 25, 50, -1], [5,10, 25, 50, "All"]],
+                "pagingType": "first_last_numbers",
+                "fnInitComplete": function (json) { addSearchControl(json); }
+            });
+
+            //Start Function Search
+            function addSearchControl(json) {
+                $("#tblProduct thead").append($("#tblProduct thead tr:first").clone());
+                $("#tblProduct thead tr:eq(1) th").each(function (index) {
+                    $(this).replaceWith('<th><input type="text" placeholder="Search' + $(this).text() + '"></input></th>');
+                    var searchControl = $("#tblProduct thead tr:eq(1) th:eq(" + index + ") input");
+                    searchControl.on('keyup change', function () { table.column(index).search(searchControl.val()).draw(); });
+                });
+
+
+                // footer
+                $('#dataTable tfoot th').each(function (index) {
+                    $(this).replaceWith('<th><input type="text" placeholder="Search' + $(this).text() + '"></input></th>');
+                    var searchControl = $("#dataTable tfoot th:eq(" + index + ") input");
+                    searchControl.on('keyup change', function () { table.column(index).search(searchControl.val()).draw(); });
+
+                });
+            }
+            //End Function Search
+
+
+
+
+
+
+
+
+        });// End Function
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+
+
+
+}
+
